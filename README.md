@@ -1,11 +1,12 @@
 py-arin-rws-api
 ===============
 
-Python Library for ARIN's REG-RWS REST API
+<b>Python Library for ARIN's REG-RWS REST API</b>
 
 https://www.arin.net/resources/restful-interfaces.html
 
 Requirements
+---
 - requests
 
 Usage
