@@ -1,12 +1,14 @@
 """
-    Python library for ARIN's REG-RWS REST API
+
+Python library for ARIN's REG-RWS REST API
 
     https://www.arin.net/resources/restful-interfaces.html
 
-@author: Benton Snyder
-@website: https://github.com/bensnyde
-@date: 11/20/2014
-@filename: arin.py
+Author: Benton Snyder
+Website: http://bensnyde.me
+Created: 11/20/2014
+Revised: 1/1/2015
+
 """
 import requests
 
