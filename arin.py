@@ -5,9 +5,9 @@ Python library for ARIN's REG-RWS REST API
     https://www.arin.net/resources/restful-interfaces.html
 
 Author: Benton Snyder
-Website: http://bensnyde.me
+Website: https://bensnyde.me
 Created: 11/20/2014
-Revised: 1/1/2015
+Revised: 1/28/2017
 
 """
 import requests
@@ -154,13 +154,13 @@ class OrganizationPayload:
                     <dbaName>%s</dbaName>
                     <taxId>%s</taxId>
                     <orgUrl>%s</orgUrl>
-                </org>""" % (self.streetAddress, self.city, self.iso3166_2, self.postalCode, self.comment, self.orgName, self.dbaName, self.orgUrl)
+                </org>""" % (self.streetAddress, self.city, self.iso3166_2, self.postCode, self.comment, self.orgName, self.dbaName, self.orgUrl)
 
 
 class RoaPayload:
     """Route Origin Authorization Payload"""
     def __init__(self, signature, roaData):
-        self.signiture = signature
+        self.signature = signature
         self.roaData = roaData
 
     def __str__(self):
@@ -293,13 +293,13 @@ class Arin:
             headers = {'Content-Type': 'application/xml'}
 
             if return_type is "json":
-                headers.update({'Accept:': 'application/json'})
+                headers.update({'Accept': 'application/json'})
             elif return_type is "html":
-                headers.update({'Accept:': 'text/html'})
+                headers.update({'Accept': 'text/html'})
             elif return_type is "plain":
-                headers.update({'Accept:': 'text/plain'})
+                headers.update({'Accept': 'text/plain'})
             elif return_type is "xml":
-                headers.update({'Accept:': 'application/xml'})
+                headers.update({'Accept': 'application/xml'})
 
             if method is "GET":
                 request = requests.get("https://www.arin.net/rest%s?apikey=%s" % (resource, self.apikey), headers=headers)
@@ -313,10 +313,11 @@ class Arin:
             if request.status_code is not 200:
                 raise Exception("Server returned error code %s: %s" % (request.status_code, request.text))
 
-            if return_type is "json":
-                return request.json().replace('\\"', "\"")
-            else:
-                return request.text
+            return request.text
+            #if return_type is "json":
+            #    return request.json().replace('\\"', "\"")
+            #else:
+            #    return request.text
         except Exception as ex:
             print "_api_query(%s) exception: %s" % (resource, ex)
             return False
@@ -616,7 +617,7 @@ class Arin:
         """
         return self._api_query("/org/%s/poc/%s;pocFunction=%s" % (org_handle, poc_handle, poc_function), method="PUT")
 
-    def get_delegation(self, delegation_name):
+    def get_delegation(self, delegation_name=None):
         """Get Delegation
 
             https://www.arin.net/resources/restfulmethods.html#delegations
@@ -652,7 +653,7 @@ class Arin:
         Returns
             DelegationPayload - https://www.arin.net/resources/restfulpayloads.html#delegation
         """
-        return self._api_query("/delegation/%s/nameserver/%s" % (delegation_name, nameserver))
+        return self._api_query("/delegation/%s/nameserver/%s" % (delegation_name, nameserver), method="POST")
 
     def modify_delegation_delete_nameserver(self, delegation_name, nameserver):
         """Delete Nameserver from Delegatoin
